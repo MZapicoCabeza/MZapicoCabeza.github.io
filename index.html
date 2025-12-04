@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maria_Zapico_Portfolio.exe</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #A0D8D6; /* Verde menta */
+            --window-bg: #E0F2F1;
+            --white: #ffffff;
+            --text-color: #2d2d2d;
+            --border-color: #000000;
+            --bar-color: #8CD6B5;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'VT323', monospace;
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+            font-size: 1.2rem;
+
+            /* --- FONDO NUBES PIXEL --- */
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAABlBMVEUAAAD///+l2Z/dAAAAAnRSTlMA/1uRIrUAAAA3SURBVFjD7c0xAQAgDAAxg39PxeDDo4Gzt0B3FwAAAAAAAAAAAAAA8K7D6fD6FwAAAAAAAAAAcAsYjAAt/dZlWgAAAABJRU5ErkJggg==');
+            background-size: 128px 128px;
+            image-rendering: pixelated;
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- ESTILOS DE VENTANA --- */
+        .window {
+            background: var(--bg-color);
+            border: 3px solid var(--border-color);
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .window-header {
+            background: #fff;
+            border-bottom: 3px solid var(--border-color);
+            padding: 5px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header-icon { font-size: 1.2rem; }
+        .window-content { position: relative; }
+
+        /* --- HEADER / DIGITAL ME --- */
+        .header-scene {
+            background-color: var(--window-bg);
+            min-height: 250px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .digital-me-box {
+            background: #fff;
+            border: 3px solid var(--border-color);
+            width: 140px;
+            padding: 5px;
+            border-radius: 5px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+        }
+
+        .digital-me-header {
+            border-bottom: 2px solid var(--border-color);
+            font-size: 0.9rem;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(120%);
+            image-rendering: pixelated;
+        }
+
+        .speech-bubble {
+            background: #fff;
+            border: 3px solid var(--border-color);
+            padding: 15px;
+            border-radius: 20px;
+            margin-left: 30px;
+            position: relative;
+            max-width: 500px;
+            z-index: 2;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            border: 10px solid transparent;
+            border-right-color: var(--border-color);
+            transform: translateY(-50%);
+        }
+
+        /* --- DASHBOARD GRID --- */
+        .dashboard-grid {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .header-scene { flex-direction: column; text-align: center; }
+            .speech-bubble { margin: 20px 0 0 0; }
+            .speech-bubble::after { display: none; }
+            .fs-grid, .db-grid { grid-template-columns: 1fr !important; }
+        }
+
+        .sub-window {
+            background: #fff;
+            border: 3px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .sub-header {
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        /* Barras de Progreso (Tech Stack) */
+        .skill-list div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Alineación vertical */
+            margin-bottom: 8px; /* Un poco más de espacio entre items */
+            font-size: 1.1rem;
+        }
+
+        .bar-container {
+            width: 100px; /* Un poco más anchas para que se vean mejor */
+            height: 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px; /* Más redondeadas como en la imagen */
+            padding: 2px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            margin-top: 4px; /* Bajado ligeramente */
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: var(--bar-color);
+            border-radius: 4px;
+
+            /* CAMBIA ESTO: Usa un número negativo para subir */
+            transform: translateY(4px);
+        }
+
+        /* Texto Scrollable (About Me) */
+        .about-content {
+            font-size: 1rem;
+            line-height: 1.4;
+            height: 350px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .about-content h4 {
+            margin: 15px 0 8px 0;
+            text-decoration: none;
+            border-bottom: 2px solid var(--bar-color);
+            display: inline-block;
+            font-size: 1.1rem;
+        }
+
+        .about-content p { margin: 5px 0; }
+        .about-content ul { padding-left: 20px; margin: 5px 0 15px 0; }
+        .about-content li { margin-bottom: 4px; font-size: 0.95rem; color: #444; }
+
+        .about-content::-webkit-scrollbar { width: 8px; }
+        .about-content::-webkit-scrollbar-track { background: #eee; border-left: 1px solid #000; }
+        .about-content::-webkit-scrollbar-thumb { background: #000; }
+
+        /* --- PROYECTOS --- */
+        .projects-area {
+            grid-column: 1 / -1;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .project-card {
+            background: #fff;
+            border: 3px solid var(--border-color);
+            padding: 15px;
+            position: relative;
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.2);
+            border-color: #000;
+        }
+
+        .card-header {
+            border-bottom: 2px dashed var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .folder-icon { font-size: 1.5rem; }
+        .card-title { font-weight: bold; font-size: 1.1rem; }
+
+        .tech-tags span {
+            display: inline-block;
+            background: var(--bar-color);
+            color: #000;
+            padding: 2px 6px;
+            font-size: 0.8rem;
+            border: 1px solid #000;
+            margin-right: 5px;
+            margin-top: 5px;
+            border-radius: 4px;
+        }
+
+        .card-actions { margin-top: 15px; }
+
+        .btn-pixel {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: #fff;
+            border: 2px solid #000;
+            padding: 5px;
+            text-decoration: none;
+            color: #000;
+            font-weight: bold;
+            box-shadow: 2px 2px 0px #000;
+            transition: active 0.1s;
+        }
+        .btn-pixel:hover { background: #f0f0f0; }
+        .btn-pixel:active { transform: translate(2px, 2px); box-shadow: none; }
+
+        /* --- TECH STACK SECTION --- */
+        .tech-stack-section {
+            background: #fff;
+            border: 3px solid var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+        }
+
+        .tech-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+        .tech-list li::before { content: "> "; color: var(--bar-color); font-weight: bold; }
+
+        /* Títulos de Categoría */
+        .tech-stack-section h4 {
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 5px;
+            width: 100%;
+        }
+
+        .tech-text-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tech-text-tags span {
+            background: var(--bar-color);
+            border: 2px solid var(--border-color);
+            padding: 4px 12px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+            transition: transform 0.1s;
+            cursor: default;
+        }
+        .tech-text-tags span:hover { transform: translateY(-2px); background: #fff; }
+
+        /* --- GRIDS PERSONALIZADOS PARA TECH --- */
+        .fs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .db-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .col-title {
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+            color: #555;
+            text-transform: uppercase;
+            border-bottom: 2px dotted var(--bar-color);
+            display: inline-block;
+        }
+        .pixel-icon {
+            width: 15px;       /* Ajusta el tamaño según tu imagen */
+            height: 15px;
+            margin-right: 2px; /* Espacio entre el icono y el texto */
+            image-rendering: pixelated; /* Clave para que no se vea borroso */
+            vertical-align: middle; /* Para centrarlo verticalmente con el texto */
+        }
+
+        /* Asegúrate de que el título también esté alineado */
+        .card-title {
+            vertical-align: middle;
+        }
+
+        /* --- FOOTER --- */
+        .footer-content {
+            background: var(--window-bg);
+            padding: 40px 20px 20px 20px;
+            text-align: center;
+            position: relative;
+        }
+        .pixel-sun {
+            width: 80px;
+            height: 40px;
+            background: #fff;
+            border-radius: 80px 80px 0 0;
+            border: 3px solid var(--border-color);
+            border-bottom: none;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+        .contact-box {
+            background: #fff;
+            border: 3px solid var(--border-color);
+            display: inline-block;
+            padding: 10px;
+            text-align: left;
+            position: relative;
+            z-index: 2;
+            min-width: 300px;
+            border-radius: 10px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+        }
+        .contact-box a { color: #000; text-decoration: none; font-weight: bold; }
+        .contact-box a:hover { text-decoration: underline; background-color: var(--bar-color); }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="window">
+        <div class="window-header">
+            <span>MARIA'S PORTFOLIO.EXE</span>
+            <span class="header-icon">✿</span>
+        </div>
+        <div class="window-content header-scene">
+            <div class="digital-me-box">
+                <div class="digital-me-header">Digital Me °°</div>
+                <img src="avatar.jpeg" alt="Maria Sketch" class="avatar-img" onerror="this.src='https://placehold.co/150x150/png?text=IMG'">
+            </div>
+            <div class="speech-bubble">
+                <p><strong>>_ Hi! I'm María Zapico.</strong></p>
+                <p>Data Science & Engineering student bridging the gap between <strong>AI</strong> and <strong>Software</strong>. I specialize in building intelligent, scalable applications using <strong>GenAI</strong>, <strong>Computer Vision</strong>, and modern <strong>Full-Stack</strong> technologies.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="window">
+        <div class="window-header">
+            <span>INSTALLED PROGRAMS & DATA</span>
+            <span class="header-icon">✿</span>
+        </div>
+
+        <div class="dashboard-grid">
+
+            <div style="display: flex; flex-direction: column;">
+                <div class="sub-window">
+                    <div class="sub-header"><span>Tech Stack</span> <span>°°</span></div>
+                    <div class="skill-list">
+                        <div><span>Data Science & AI</span> <div class="bar-container"><div class="bar-fill" style="width:95%"></div></div></div>
+                        <div><span>Full-Stack Development</span> <div class="bar-container"><div class="bar-fill" style="width:85%"></div></div></div>
+                        <div><span>Microservices</span> <div class="bar-container"><div class="bar-fill" style="width:80%"></div></div></div>
+                        <div><span>Databases</span> <div class="bar-container"><div class="bar-fill" style="width:90%"></div></div></div>
+                        <div><span>Data Engineering</span> <div class="bar-container"><div class="bar-fill" style="width:85%"></div></div></div>
+                        <div><span>Automation</span> <div class="bar-container"><div class="bar-fill" style="width:80%"></div></div></div>
+                    </div>
+                </div>
+
+                <div class="sub-window">
+                    <div class="sub-header"><span>Languages</span> <span>°°</span></div>
+                    <div class="skill-list">
+                        <div><span>English</span> <div class="bar-container"><div class="bar-fill" style="width:80%"></div></div></div>
+                        <div><span>Spanish</span> <div class="bar-container"><div class="bar-fill" style="width:100%"></div></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sub-window">
+                <div class="sub-header"><span>About Me & Experience</span> <span>°°</span></div>
+                <div class="about-content">
+                    <p><strong>Education:</strong><br>
+                    Final Year Data Science and Engineering Student<br>
+                    University of Oviedo</p>
+
+                    <h4> Experience</h4>
+
+                    <p><strong>Intelligent Technical Plans Analysis System (Thesis)</strong><br>
+                    <em>Research Project (TFG) - University of Oviedo - Normagrup</em></p>
+                    <ul>
+                        <li>Developed an automated system for extracting and analyzing technical data from luminaires using <strong>Web Scraping</strong> and <strong>AI</strong>.</li>
+                        <li>Implemented a modular scraper (Scrapy, Playwright) to harvest data from dynamic websites.</li>
+                        <li>Built a <strong>Computer Vision</strong> module using <strong>YOLO (v5/v8)</strong> and OCR to interpret technical drawings and extract dimensions (length, width, height) automatically.</li>
+                        <li>Integrated an intelligent search engine based on LLMs (RAG) to locate unregistered products.</li>
+                    </ul>
+
+                    <p><strong>Accenture | GenAI Internship</strong><br>
+                    <em>Jul 2024 – Mar 2025 (Strategy & Consulting)</em></p>
+                    <ul>
+                        <li>Gained hands-on experience with GenAI models (OpenAI, LLaMA, Hugging Face, Azure).</li>
+                        <li>Developed a Python library for API access and a server for custom model inference.</li>
+                        <li>Simplified GenAI usage for non-technical users.</li>
+                    </ul>
+
+                    <p><strong>Accenture | Data Analyst Intern</strong><br>
+                    <em>Jul 2023 – Sep 2023 (Strategy & Consulting)</em></p>
+                    <ul>
+                        <li>Developed Python scripts for causality and Pareto analysis on real client data.</li>
+                        <li>Analyzed relationships between structured and temporal data variables.</li>
+                    </ul>
+
+                    <h4> Relevant Projects</h4>
+
+                    <p><strong>DermaBot (Intelligent Dermatological Assistant)</strong></p>
+                    <ul>
+                        <li>Developed a comprehensive health platform connecting patients and doctors.</li>
+                        <li>Implemented a <strong>Hybrid Memory Architecture</strong> (FSM + Structured SQL + Long-term Summarization) to prevent hallucinations.</li>
+                        <li>Integrated <strong>RAG</strong> with PubMed for scientific validation and environmental correlation analysis (pollen, humidity) using Open-Meteo API.</li>
+                        <li>Responsible for Full-Stack architecture: React Frontend, Python Backend, and PostgreSQL database.</li>
+                    </ul>
+
+                    <p><strong>Tumor ID in Imaging</strong></p>
+                    <ul>
+                        <li>Implemented Deep Learning models (CNNs with TensorFlow/Keras) for tumor detection in medical images.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="projects-area">
+                <h4 style="margin: 10px 0;">> C:\Projects\Explore</h4>
+
+                <div class="projects-grid">
+
+                    <div class="project-card">
+                        <div>
+                            <div class="card-header">
+                                <img src="folder2.png" class="pixel-icon" alt="icon">
+                                <span class="card-title">Causal Analysis</span>
+                            </div>
+                            <p>Python code to represent causal relationships in graphs and Pareto analysis on time series.</p>
+                            <div class="tech-tags"><span>Python</span> <span>Graphs</span> <span>Stats</span></div>
+                        </div>
+                        <div class="card-actions"><a href="#" class="btn-pixel">View on GitHub</a></div>
+                    </div>
+
+                    <div class="project-card">
+                        <div>
+                            <div class="card-header">
+                                <img src="folder2.png" class="pixel-icon" alt="icon">
+                                <span class="card-title"> DermaBot AI Platform</span></div>
+                            <p>Full-stack dermatological assistant. Features RAG (PubMed), FSM logic, and multi-factor environmental correlation.</p>
+                            <div class="tech-tags"><span>RAG/LLM</span> <span>PostgreSQL</span> <span>OpenAI</span> <span>React</span></div>
+                        </div>
+                        <div class="card-actions"><a href="#" class="btn-pixel">View on GitHub</a></div>
+                    </div>
+
+                    <div class="project-card">
+                        <div>
+                            <div class="card-header">
+                                <img src="folder2.png" class="pixel-icon" alt="icon">
+                                <span class="card-title">AI Technical Plans Analysis</span></div>
+                            <p>Automated extraction of technical data from blueprints using Computer Vision & Scraping.</p>
+                            <div class="tech-tags"><span>YOLOv8</span> <span>Scrapy</span> <span>OCR</span> <span>LLMs</span></div>
+                        </div>
+                        <div class="card-actions"><a href="#" class="btn-pixel">View on GitHub</a></div>
+                    </div>
+
+                </div>
+
+                <div class="tech-stack-section">
+                    <div class="sub-header"><span>Technologies & Tools</span> <span>°°</span></div>
+
+                    <h4>> Full-Stack Development</h4>
+                    <div class="fs-grid">
+                        <div>
+                            <h5 class="col-title">:: Frontend ::</h5>
+                            <div class="tech-text-tags">
+                                <span>HTML5</span> <span>CSS3</span> <span>JavaScript</span> <span>React</span> <span>Expo</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="col-title">:: Backend ::</h5>
+                            <div class="tech-text-tags">
+                                <span>Node.js</span> <span>FastAPI</span> <span>Flask</span> <span>Python</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="col-title">:: Tools/Env ::</h5>
+                            <div class="tech-text-tags">
+                                <span>Git</span> <span>BitBucket</span> <span>GitHub</span> <span>Visual Studio</span> <span>PyCharm</span> <span>DataGrip</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>> Databases</h4>
+                    <div class="db-grid">
+                        <div>
+                            <h5 class="col-title">:: SQL ::</h5>
+                            <div class="tech-text-tags">
+                                <span>SQL</span> <span>PostgreSQL</span> <span>MySQL / MariaDB</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="col-title">:: NoSQL ::</h5>
+                            <div class="tech-text-tags">
+                                <span>MongoDB</span> <span>Redis</span>  <span>Cassandra</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>> Data Science & AI</h4>
+                    <div class="tech-text-tags">
+                        <span>Python</span> <span>R</span>  <span>Anaconda</span> <span>MatLab</span> <span>TensorFlow/Keras</span> <span>PyTorch</span> <span>YOLOv5/v8</span> <span>OpenCV</span> <span>Scrapy</span> <span>Playwright</span> <span>OCR</span><span>RAG</span> <span>FSM Logic</span>
+                    </div>
+
+                    <h4>> Microservices Architecture</h4>
+                    <div class="tech-text-tags">
+                        <span>Docker</span> <span>FastAPI</span> <span>Node.js</span> <span>AWS</span> <span>Azure</span>
+                    </div>
+
+                    <h4>> Data Engineering</h4>
+                    <div class="tech-text-tags">
+                        <span>Databricks</span> <span>Unix</span> <span>Cisco</span> <span>WireShark</span> <span>SSH</span>
+                    </div>
+
+                    <h4>> Automation</h4>
+                    <div class="tech-text-tags">
+                        <span>Python</span> <span>FastAPI</span> <span>Putty</span> <span>n8n</span>
+                    </div>
+
+                    <h4>> Documentation</h4>
+                    <div class="tech-text-tags">
+                        <span>LaTeX</span> <span>Markdown</span> <span>Confluence</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="window">
+        <div class="window-header">
+            <span>CONNECT.EXE</span>
+            <span class="header-icon">✿</span>
+        </div>
+        <div class="window-content footer-content">
+            <h2 style="color: var(--text-color); position:relative; z-index:2;">Let's chat!</h2>
+            <div class="pixel-sun"></div>
+            <div class="contact-box">
+                <div class="sub-header"><span>Contact Me</span> <span>°°</span></div>
+                <ul style="list-style: none; padding: 0; line-height: 1.6;">
+                    <li>> <strong>LinkedIn:</strong> <a href="#">linkedin.com/in/maria-zapico</a></li>
+                    <li>> <strong>GitHub:</strong> <a href="#">github.com/maria-zapico</a></li>
+                    <li>> <strong>Email:</strong> <a href="mailto:email@ejemplo.com">email@ejemplo.com</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
